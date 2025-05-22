@@ -20,5 +20,5 @@ public abstract class Base implements Serializable {
     private Long id;
 
     @Column
-    private boolean activo;
+    private boolean activo = true;
 }

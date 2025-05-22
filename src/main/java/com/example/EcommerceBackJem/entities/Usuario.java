@@ -25,7 +25,7 @@ import java.util.List;
 public class Usuario extends Base implements UserDetails {
     @Column(name = "userName")
     private String userName;
-    @Column(name = "email")
+    @Column(name = "email",unique = true)
     private String email;
     @Column(name = "contraseña")
     private String contraseña;

@@ -26,9 +26,9 @@ public class AuthService {
     private final PasswordEncoder passwordEncoder;
 
     public AuthResponse login(LoginRequest request){
-        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
-        System.out.println("Username request: " + request.getUsername());
-        UserDetails userDetails = usuarioRepository.findByUserName(request.getUsername())
+        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
+        System.out.println("Username request: " + request.getEmail());
+        UserDetails userDetails = usuarioRepository.findByEmail(request.getEmail())
                 .orElseThrow(()-> new UsernameNotFoundException("Usuario no encontrado"));
         System.out.println("User name en auth service: " + userDetails.getUsername());
         String token = jwtService.getToken(userDetails);
