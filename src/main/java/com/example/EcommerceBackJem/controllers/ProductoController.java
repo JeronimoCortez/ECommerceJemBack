@@ -2,10 +2,11 @@ package com.example.EcommerceBackJem.controllers;
 
 
 import com.example.EcommerceBackJem.entities.Producto;
+import com.example.EcommerceBackJem.repositories.DescuentoRepository;
 import com.example.EcommerceBackJem.services.ProductoService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 import com.example.EcommerceBackJem.repositories.ProductoRepository;
 import com.example.EcommerceBackJem.services.BaseService;
 @RestController
@@ -17,4 +18,10 @@ public class ProductoController extends BaseController<Producto, Long> {
 
     @Autowired
     private ProductoService productoService;
+
+    @PatchMapping("/{idProducto}/addDiscount/{idDescuento}")
+    public ResponseEntity<Producto> asignarDescuento(@PathVariable Long idProducto, @PathVariable Long idDescuento){
+        Producto producto = productoService.asignarDescuento(idProducto, idDescuento);
+        return ResponseEntity.ok(producto);
+    }
 }

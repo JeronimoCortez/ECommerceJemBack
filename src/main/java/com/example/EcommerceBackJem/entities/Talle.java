@@ -1,8 +1,6 @@
 package com.example.EcommerceBackJem.entities;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,6 +13,16 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class Talle extends Base{
+    @ManyToOne
+    @JoinColumn(name = "producto_id")
+    private Producto producto;
+
     @Column(name = "tipo_talle")
-    private String tipo_talle;
+    private Tipo tipo_talle;
+
+    @Column(name = "talle")
+    private String talle;
+
+    @Column(name = "stock")
+    private Integer stock;
 }

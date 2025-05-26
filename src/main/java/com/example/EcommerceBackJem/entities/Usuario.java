@@ -1,10 +1,7 @@
 package com.example.EcommerceBackJem.entities;
 
 import com.example.EcommerceBackJem.entities.enums.Role;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
-import jakarta.persistence.UniqueConstraint;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -35,6 +32,14 @@ public class Usuario extends Base implements UserDetails {
     private String dni;
     @Column(name = "phone")
     private String phone;
+
+    @ManyToMany
+    @JoinTable(
+            name = "usuario_dir",
+            joinColumns = @JoinColumn(name = "usuario_id"),
+            inverseJoinColumns = @JoinColumn(name = "direccion_id")
+    )
+    private List<Direccion> direcciones;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

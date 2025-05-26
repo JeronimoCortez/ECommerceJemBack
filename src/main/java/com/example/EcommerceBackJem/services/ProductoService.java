@@ -1,6 +1,9 @@
 package com.example.EcommerceBackJem.services;
 
+import com.example.EcommerceBackJem.entities.Descuento;
 import com.example.EcommerceBackJem.entities.Producto;
+import com.example.EcommerceBackJem.repositories.CategoriaRepository;
+import com.example.EcommerceBackJem.repositories.DescuentoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.example.EcommerceBackJem.repositories.BaseRepository;
@@ -17,6 +20,21 @@ public class ProductoService extends BaseService<Producto, Long>{
     }
     @Autowired
     private ProductoRepository productoRepository;
+
+    @Autowired
+    private DescuentoRepository descuentoRepository;
+
+    public Producto asignarDescuento(Long idProducto, Long idDescuento){
+            Producto producto = productoRepository.findById(idProducto)
+                    .orElseThrow(() -> new RuntimeException("Producto no valido"));
+
+            Descuento descuento = descuentoRepository.findById(idDescuento)
+                    .orElseThrow(()-> new RuntimeException("Descuento no valido"));
+
+            producto.getDescuentos().add(descuento);
+
+            return productoRepository.save(producto);
+    }
 
 
 

@@ -2,6 +2,7 @@ package com.example.EcommerceBackJem.entities;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,6 +10,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "descuento")
@@ -23,4 +25,6 @@ public class Descuento extends Base{
     private Date fechaLimite;
     @Column(name = "descuento")
     private Float descuento;
-}
+
+    @ManyToMany(mappedBy = "descuentos")
+    private List<Producto> productos;}

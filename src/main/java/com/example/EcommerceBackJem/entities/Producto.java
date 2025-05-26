@@ -35,12 +35,20 @@ public class Producto extends Base{
     private String descripcion;
 
     @OneToMany(mappedBy = "producto", cascade = CascadeType.ALL)
-    private List<TalleProducto> talleProductos = new ArrayList<>();
+    private List<Talle> talles = new ArrayList<>();
 
     @Column(name = "color")
     private String color;
 
     @Column(name = "marca")
     private String marca;
+
+    @ManyToMany
+    @JoinTable(
+            name = "descuento_producto",
+            joinColumns = @JoinColumn(name = "producto_id"),
+            inverseJoinColumns = @JoinColumn(name = "descuento_id")
+    )
+    private List<Descuento> descuentos;
 
 }
