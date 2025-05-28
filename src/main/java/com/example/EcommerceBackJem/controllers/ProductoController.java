@@ -46,7 +46,7 @@ public class ProductoController extends BaseController<Producto, Long> {
         return ResponseEntity.ok(productos);
     }
 
-    @GetMapping("/filtrarPorCategoria/{nombreCategoria}")
+    @GetMapping("/filtrarPorTalle/{talle}")
     public ResponseEntity<List<Producto>> filtroTalle(@PathVariable String talle){
         List<Producto> productos = productoService.filtrarPorTalle(talle);
         return ResponseEntity.ok(productos);
