@@ -13,10 +13,4 @@ public class DetalleService extends BaseService<Detalle, Long>{
         super(baseRepository);
     }
 
-    @Autowired
-    private DetalleRepository detalleRepository;
-
-    @Autowired
-    private ProductoRepository productoRepository;
-
 }

@@ -13,12 +13,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class Talle extends Base{
-    @ManyToOne
-    @JoinColumn(name = "producto_id")
+    @ManyToOne()
+    @JoinColumn(name = "id_producto", referencedColumnName = "id")
     private Producto producto;
-
-    @Column(name = "tipo_talle")
-    private Tipo tipo_talle;
 
     @Column(name = "talle")
     private String talle;

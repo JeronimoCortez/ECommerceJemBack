@@ -51,4 +51,6 @@ public class Producto extends Base{
     )
     private List<Descuento> descuentos;
 
+    private String imagen;
+
 }

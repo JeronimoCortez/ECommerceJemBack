@@ -27,4 +27,5 @@ public class Descuento extends Base{
     private Float descuento;
 
     @ManyToMany(mappedBy = "descuentos")
-    private List<Producto> productos;}
+    private List<Producto> productos;
+}

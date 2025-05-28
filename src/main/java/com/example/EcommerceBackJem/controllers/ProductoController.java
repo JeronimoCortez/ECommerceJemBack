@@ -24,4 +24,10 @@ public class ProductoController extends BaseController<Producto, Long> {
         Producto producto = productoService.asignarDescuento(idProducto, idDescuento);
         return ResponseEntity.ok(producto);
     }
+
+    @PatchMapping("/eliminarImagen/{id}")
+    public ResponseEntity<Producto> eliminarImagen(@PathVariable Long id){
+        Producto producto = productoService.eliminarImagen(id);
+        return ResponseEntity.ok(producto);
+    }
 }

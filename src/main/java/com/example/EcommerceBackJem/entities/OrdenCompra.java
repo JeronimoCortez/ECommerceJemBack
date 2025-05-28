@@ -1,5 +1,6 @@
 package com.example.EcommerceBackJem.entities;
 
+import com.example.EcommerceBackJem.entities.enums.Estado;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -18,8 +19,8 @@ import java.util.List;
 @Builder
 public class OrdenCompra extends Base{
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "id_dir_user", referencedColumnName = "id")
-    private Direccion direccionUsuario;
+    @JoinColumn(name = "id_user", referencedColumnName = "id")
+    private Usuario usuario;
 
     @OneToMany(mappedBy = "ordenCompra", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Detalle> detalles = new ArrayList<>();
@@ -30,7 +31,7 @@ public class OrdenCompra extends Base{
     @Column(name = "precio_total")
     private Float precio_total;
     @Column(name = "metodo_de_pago")
-    private String metodo_de_pago;
+    private String metodoPago;
     @Column(name = "estado")
-    private String estado;
+    private Estado estado;
 }

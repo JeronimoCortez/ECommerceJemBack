@@ -30,12 +30,25 @@ public class ProductoService extends BaseService<Producto, Long>{
 
             Descuento descuento = descuentoRepository.findById(idDescuento)
                     .orElseThrow(()-> new RuntimeException("Descuento no valido"));
+            if ((producto.getPrecio() - descuento.getDescuento()) >= 0){
+                producto.getDescuentos().add(descuento);
+                return productoRepository.save(producto);
+            }
 
-            producto.getDescuentos().add(descuento);
-
-            return productoRepository.save(producto);
+            return producto;
     }
 
 
+    public Producto eliminarImagen(Long idProducto){
+        Optional<Producto> productoBd = productoRepository.findById(idProducto);
 
+        if (!productoBd.isPresent()){
+            return null;
+        }
+
+        productoBd.get().setImagen("");
+
+        return productoRepository.save(productoBd.get());
+
+    }
 }
