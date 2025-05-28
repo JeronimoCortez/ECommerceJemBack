@@ -54,4 +54,30 @@ public class FileUploadService implements FileUploadServiceInterface {
         }
 
     }
+
+    @Override
+    public Producto delete(Long idProducto) throws Exception {
+        Optional<Producto> productoBd = productoService.findById(idProducto);
+        Producto producto = productoBd.orElseThrow(() -> new RuntimeException("Producto no encontrado"));
+
+        String urlImagen = producto.getImagen();
+
+        if (urlImagen != null && !urlImagen.isEmpty()) {
+            String[] parts = urlImagen.split("/");
+            String filenameWithExtension = parts[parts.length - 1];
+            String filename = filenameWithExtension.split("\\.")[0];
+            String folder = parts[parts.length - 2];
+
+            String publicId = folder + "/" + filename;
+
+            try{
+                Map deleteResult = cloudinary.uploader().destroy(publicId, ObjectUtils.emptyMap());
+            }catch (Exception ex){
+                System.err.println("Error al eliminar imagen de Cloudinary: " + ex.getMessage());
+            }
+        }
+
+        producto.setImagen("");
+        return productoService.save(producto);
+    }
 }

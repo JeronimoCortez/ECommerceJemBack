@@ -9,6 +9,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -27,5 +28,5 @@ public class Descuento extends Base{
     private Float descuento;
 
     @ManyToMany(mappedBy = "descuentos")
-    private List<Producto> productos;
+    private List<Producto> productos = new ArrayList<Producto>();
 }

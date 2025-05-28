@@ -43,7 +43,7 @@ public class Producto extends Base{
     @Column(name = "marca")
     private String marca;
 
-    @ManyToMany
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(
             name = "descuento_producto",
             joinColumns = @JoinColumn(name = "producto_id"),

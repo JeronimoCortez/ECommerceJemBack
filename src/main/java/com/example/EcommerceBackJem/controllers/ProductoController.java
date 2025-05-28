@@ -9,6 +9,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.example.EcommerceBackJem.repositories.ProductoRepository;
 import com.example.EcommerceBackJem.services.BaseService;
+
+import java.util.List;
+
 @RestController
 @RequestMapping("/producto")
 public class ProductoController extends BaseController<Producto, Long> {
@@ -25,9 +28,27 @@ public class ProductoController extends BaseController<Producto, Long> {
         return ResponseEntity.ok(producto);
     }
 
-    @PatchMapping("/eliminarImagen/{id}")
-    public ResponseEntity<Producto> eliminarImagen(@PathVariable Long id){
-        Producto producto = productoService.eliminarImagen(id);
+    @PatchMapping("/{idProducto}/addDiscount/{idCategoria}")
+    public ResponseEntity<Producto> agregarCategoria(@PathVariable Long idProducto, @PathVariable Long idCategoria){
+        Producto producto = productoService.agregarCategoria(idProducto, idCategoria);
         return ResponseEntity.ok(producto);
+    }
+
+    @GetMapping("/filtrarPorMarca/{marca}")
+    public ResponseEntity<List<Producto>> filtroMarca(@PathVariable String marca){
+        List<Producto> productos = productoService.filtrarPorMarca(marca);
+        return ResponseEntity.ok(productos);
+    }
+
+    @GetMapping("/filtrarPorCategoria/{nombreCategoria}")
+    public ResponseEntity<List<Producto>> filtroCategoria(@PathVariable String nombreCategoria){
+        List<Producto> productos = productoService.filtrarPorCategoria(nombreCategoria);
+        return ResponseEntity.ok(productos);
+    }
+
+    @GetMapping("/filtrarPorCategoria/{nombreCategoria}")
+    public ResponseEntity<List<Producto>> filtroTalle(@PathVariable String talle){
+        List<Producto> productos = productoService.filtrarPorTalle(talle);
+        return ResponseEntity.ok(productos);
     }
 }

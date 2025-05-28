@@ -17,4 +17,9 @@ public class FileUploadController {
     public ResponseEntity<?> uplodad(@PathVariable Long idProducto, @RequestParam MultipartFile file) throws Exception {
         return ResponseEntity.ok(fileUploadService.upload(idProducto, file));
     }
+
+    @PatchMapping("/producto/eliminarImagen/{idProducto}")
+    public ResponseEntity<?> delete(@PathVariable Long idProducto) throws Exception {
+        return ResponseEntity.ok(fileUploadService.delete(idProducto));
+    }
 }
