@@ -4,10 +4,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -15,7 +12,8 @@ import java.util.List;
 
 @Entity
 @Table(name = "descuento")
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
@@ -28,5 +26,5 @@ public class Descuento extends Base{
     private Float descuento;
 
     @ManyToMany(mappedBy = "descuentos")
-    private List<Producto> productos = new ArrayList<Producto>();
+    private List<Producto> productos = new ArrayList<>();
 }

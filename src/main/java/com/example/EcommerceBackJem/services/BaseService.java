@@ -27,6 +27,15 @@ public abstract class BaseService<E extends Base, ID extends Serializable> {
         }
 
     }
+    @Transactional
+    public List<E> findAllActivo() throws Exception {
+        try {
+            return baseRepository.findByActivoTrue();
+        } catch (Exception ex) {
+            throw new Exception(ex.getMessage());
+        }
+
+    }
 
     @Transactional
     public Optional<E> findById(ID id) throws Exception {

@@ -1,17 +1,15 @@
 package com.example.EcommerceBackJem.entities;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Table(name = "productos")
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
@@ -21,7 +19,7 @@ public class Producto extends Base{
     private String nombre;
 
     @Column(name = "precio")
-    private Float precio;
+    private Double precio;
 
     @ManyToMany
     @JoinTable(
@@ -49,7 +47,7 @@ public class Producto extends Base{
             joinColumns = @JoinColumn(name = "producto_id"),
             inverseJoinColumns = @JoinColumn(name = "descuento_id")
     )
-    private List<Descuento> descuentos;
+    private List<Descuento> descuentos = new ArrayList<>();
 
     private String imagen;
 

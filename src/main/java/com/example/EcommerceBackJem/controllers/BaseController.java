@@ -23,6 +23,13 @@ public abstract class BaseController <E extends Base, ID extends Serializable>{
         List<E> entities = service.findAll();
         return ResponseEntity.ok(entities);
     }
+
+    @GetMapping("/activos")
+    public ResponseEntity<List<E>> listarActivos() throws Exception {
+        List<E> entities = service.findAllActivo();
+        return ResponseEntity.ok(entities);
+    }
+
     @GetMapping("/{id}")
     public Optional<E> buscarPorId(@PathVariable ID id) throws Exception {
         return service.findById(id);
