@@ -2,6 +2,9 @@ package com.example.EcommerceBackJem.controllers;
 
 
 import com.example.EcommerceBackJem.entities.Base;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.example.EcommerceBackJem.services.BaseService;
@@ -18,10 +21,17 @@ public abstract class BaseController <E extends Base, ID extends Serializable>{
         this.service = service;
     }
 
-    @GetMapping()
-    public ResponseEntity<List<E>> listar() throws Exception {
-        List<E> entities = service.findAll();
-        return ResponseEntity.ok(entities);
+    @GetMapping
+    public ResponseEntity<?> listar(
+            @RequestParam(required = false) Integer page,
+            @RequestParam(required = false) Integer size
+    ) throws Exception {
+        if (page != null && size != null) {
+            Pageable pageable = PageRequest.of(page, size);
+            return ResponseEntity.ok(service.findAllPage(pageable));
+        } else {
+            return ResponseEntity.ok(service.findAll());
+        }
     }
 
     @GetMapping("/activos")
@@ -47,6 +57,11 @@ public abstract class BaseController <E extends Base, ID extends Serializable>{
     @DeleteMapping("/{id}")
     public void eliminar(@PathVariable ID id) throws Exception {
         service.delete(id);
+    }
+
+    @PatchMapping("/{id}")
+    public void darAlta(@PathVariable ID id) throws Exception {
+        service.darAlta(id);
     }
 }
 

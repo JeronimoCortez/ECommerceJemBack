@@ -15,4 +15,6 @@ import lombok.*;
 public class Tipo extends Base{
     @Column(name = "nombre")
     private String nombre;
+
+
 }

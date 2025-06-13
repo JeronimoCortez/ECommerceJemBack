@@ -24,6 +24,7 @@ public class OrdenCompra extends Base{
     @OneToMany(mappedBy = "ordenCompra", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Detalle> detalles = new ArrayList<>();
 
+
     @Column(name = "fecha")
     private LocalDate fecha;
 

@@ -13,12 +13,12 @@ public class FileUploadController {
     @Autowired
     private FileUploadService fileUploadService;
 
-    @PatchMapping("/producto/{idProducto}")
-    public ResponseEntity<?> uplodad(@PathVariable Long idProducto, @RequestParam MultipartFile file) throws Exception {
-        return ResponseEntity.ok(fileUploadService.upload(idProducto, file));
+    @PatchMapping("/image")
+    public ResponseEntity<?> uplodad(@RequestParam MultipartFile file) throws Exception {
+        return ResponseEntity.ok(fileUploadService.upload(file));
     }
 
-    @PatchMapping("/producto/eliminarImagen/{idProducto}")
+    @PatchMapping("/eliminarImagen/{idProducto}")
     public ResponseEntity<?> delete(@PathVariable Long idProducto) throws Exception {
         return ResponseEntity.ok(fileUploadService.delete(idProducto));
     }

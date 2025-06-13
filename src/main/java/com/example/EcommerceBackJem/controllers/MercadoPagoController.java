@@ -16,7 +16,6 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
 @RestController()
 @RequestMapping("/pay")
 @RequiredArgsConstructor
@@ -27,7 +26,7 @@ public class MercadoPagoController {
     @Value("${mercadopago.access-token}")
     private String mpAccesToken;
 
-    @PostMapping("/mp/{idUsuario}")
+    @PostMapping("/mp")
     @CrossOrigin("*")
     public ResponseEntity<String> mp(@RequestBody Map<String, List<Long>> body, @RequestParam Long idUsuario) throws Exception {
         List<Long> ids = body.get("id");

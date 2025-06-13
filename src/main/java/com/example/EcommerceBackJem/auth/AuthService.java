@@ -3,12 +3,10 @@ package com.example.EcommerceBackJem.auth;
 import com.example.EcommerceBackJem.auth.dto.AuthResponse;
 import com.example.EcommerceBackJem.auth.dto.LoginRequest;
 import com.example.EcommerceBackJem.auth.dto.RegisterRequest;
-import com.example.EcommerceBackJem.config.AplicationConfig;
 import com.example.EcommerceBackJem.entities.Usuario;
 import com.example.EcommerceBackJem.entities.enums.Role;
 import com.example.EcommerceBackJem.repositories.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -30,10 +28,13 @@ public class AuthService {
         System.out.println("Username request: " + request.getEmail());
         UserDetails userDetails = usuarioRepository.findByEmail(request.getEmail())
                 .orElseThrow(()-> new UsernameNotFoundException("Usuario no encontrado"));
-        System.out.println("User name en auth service: " + userDetails.getUsername());
+        Usuario usuario = usuarioRepository.findByEmail(request.getEmail())
+                        .orElseThrow(() -> new UsernameNotFoundException(("Usuario no encontrado")));
         String token = jwtService.getToken(userDetails);
+
         return AuthResponse.builder()
                 .token(token)
+                .userId(usuario.getId())
                 .build();
     }
     public AuthResponse register(RegisterRequest request){
@@ -46,8 +47,10 @@ public class AuthService {
                 .rol(Role.USER)
                 .build();
         usuarioRepository.save(usuario);
+
         return AuthResponse.builder()
                 .token(jwtService.getToken(usuario))
+                .userId(usuario.getId())
                 .build();
     }
 }

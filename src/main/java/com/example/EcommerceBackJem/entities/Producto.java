@@ -1,5 +1,7 @@
 package com.example.EcommerceBackJem.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -21,18 +23,20 @@ public class Producto extends Base{
     @Column(name = "precio")
     private Double precio;
 
-    @ManyToMany
-    @JoinTable(
-            name = "producto_categoria",
-            joinColumns = @JoinColumn(name = "producto_id"),
-            inverseJoinColumns = @JoinColumn(name = "categoria_id")
-    )
-    private List<Categoria> categorias = new ArrayList<>();
+    @OneToMany(mappedBy = "producto")
+    @JsonManagedReference
+    private List<Detalle> detalles = new ArrayList<>();
+
+    @ManyToOne
+    @JoinColumn(name = "categoria_id")
+    @JsonBackReference
+    private Categoria categoria;
 
     @Column(name = "descripcion")
     private String descripcion;
 
     @OneToMany(mappedBy = "producto", cascade = CascadeType.ALL)
+    @JsonManagedReference
     private List<Talle> talles = new ArrayList<>();
 
     @Column(name = "color")
@@ -41,14 +45,14 @@ public class Producto extends Base{
     @Column(name = "marca")
     private String marca;
 
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinTable(
-            name = "descuento_producto",
-            joinColumns = @JoinColumn(name = "producto_id"),
-            inverseJoinColumns = @JoinColumn(name = "descuento_id")
-    )
-    private List<Descuento> descuentos = new ArrayList<>();
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "descuento_id", referencedColumnName = "id")
+    private Descuento descuento;
 
+    @Column(name = "imagen")
     private String imagen;
+
+    @Column(name = "genero")
+    private String genero;
 
 }

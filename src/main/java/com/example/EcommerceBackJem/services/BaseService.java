@@ -2,6 +2,8 @@ package com.example.EcommerceBackJem.services;
 
 import com.example.EcommerceBackJem.entities.Base;
 import jakarta.transaction.Transactional;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import com.example.EcommerceBackJem.repositories.BaseRepository;
 
@@ -27,6 +29,7 @@ public abstract class BaseService<E extends Base, ID extends Serializable> {
         }
 
     }
+
     @Transactional
     public List<E> findAllActivo() throws Exception {
         try {
@@ -37,6 +40,13 @@ public abstract class BaseService<E extends Base, ID extends Serializable> {
 
     }
 
+    public Page<E> findAllPage(Pageable pageable) throws Exception {
+        try{
+            return baseRepository.findAll(pageable);
+        }catch (Exception ex) {
+            throw new Exception(ex.getMessage());
+        }
+    }
     @Transactional
     public Optional<E> findById(ID id) throws Exception {
         try {
@@ -70,6 +80,18 @@ public abstract class BaseService<E extends Base, ID extends Serializable> {
         if (entityOptional.isPresent()) {
             E entity = entityOptional.get();
             entity.setActivo(false);
+            baseRepository.save(entity);
+        } else {
+            throw new Exception("Entidad no encontrada");
+        }
+    }
+
+    @Transactional
+    public void darAlta(ID id) throws Exception {
+        Optional<E> entityBd = baseRepository.findById((id));
+        if (entityBd.isPresent()) {
+            E entity = entityBd.get();
+            entity.setActivo(true);
             baseRepository.save(entity);
         } else {
             throw new Exception("Entidad no encontrada");

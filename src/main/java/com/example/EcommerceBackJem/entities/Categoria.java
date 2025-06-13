@@ -1,5 +1,6 @@
 package com.example.EcommerceBackJem.entities;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -21,6 +22,7 @@ public class Categoria extends Base{
     @JoinColumn(name = "id_tipo", referencedColumnName = "id")
     private Tipo tipo;
 
-    @ManyToMany(mappedBy = "categorias")
+    @OneToMany(mappedBy = "categoria")
+    @JsonManagedReference
     private List<Producto> productos = new ArrayList<>();
 }

@@ -23,18 +23,16 @@ public class FileUploadService implements FileUploadServiceInterface {
     private ProductoService productoService;
 
     @Override
-    public Producto upload(Long idProducto, MultipartFile file) throws Exception {
+    public String upload(MultipartFile file) throws Exception {
 
             List<String> allowedExtensions = Arrays.asList("jpg","jpeg", "png", "webp", "avif","jpg");
-            Optional<Producto> productoBd = productoService.findById(idProducto);
-            Producto producto = productoBd.orElseThrow(() -> new RuntimeException("Producto no encontrado"));
 
 
             if (file.getOriginalFilename() != null){
                 String[] splitName = file.getOriginalFilename().split("\\.");
 
                 if (!allowedExtensions.contains(splitName[splitName.length - 1].toLowerCase())) throw new Exception(
-                        String.format("Extencion %s not allowed", splitName[splitName.length - 1])
+                        String.format("Extension %s not allowed", splitName[splitName.length - 1])
                 );
             }
 
@@ -44,11 +42,8 @@ public class FileUploadService implements FileUploadServiceInterface {
 
             String imageUrl = (String) resultUpload.get("secure_url");
 
-            producto.setImagen(imageUrl);
 
-            productoService.update(producto);
-
-            return producto;
+            return (String) resultUpload.get("secure_url");
         }catch (Exception ex){
             throw new Exception(ex);
         }
