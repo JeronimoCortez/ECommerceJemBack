@@ -1,6 +1,8 @@
 package com.example.EcommerceBackJem.entities;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -22,11 +24,11 @@ public class Detalle extends Base{
 
     @ManyToOne
     @JoinColumn(name = "id_producto", referencedColumnName = "id")
-    @JsonBackReference
+    @JsonIgnoreProperties("detalles")
     private Producto producto;
 
 
     @ManyToOne
-    @JoinColumn(name = "id_ordenCompra")
+    @JoinColumn(name = "id_ordenCompra", nullable = true)
     private OrdenCompra ordenCompra;
 }

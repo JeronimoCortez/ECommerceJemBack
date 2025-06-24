@@ -39,7 +39,7 @@ public class AuthService {
     }
     public AuthResponse register(RegisterRequest request){
         Usuario usuario = Usuario.builder()
-                .userName(request.getName() + " " + request.getLastname())
+                .nombreCompleto(request.getName() + " " + request.getLastname())
                 .contraseña(passwordEncoder.encode(request.getPassword()))
                 .email(request.getEmail())
                 .phone(request.getPhone())

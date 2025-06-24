@@ -1,6 +1,7 @@
 package com.example.EcommerceBackJem.entities;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
@@ -24,15 +25,15 @@ public class Producto extends Base{
     private Double precio;
 
     @OneToMany(mappedBy = "producto")
-    @JsonManagedReference
+    @JsonIgnoreProperties("producto")
     private List<Detalle> detalles = new ArrayList<>();
 
     @ManyToOne
     @JoinColumn(name = "categoria_id")
-    @JsonBackReference
+    @JsonIgnoreProperties("productos")
     private Categoria categoria;
 
-    @Column(name = "descripcion")
+    @Column(name = "descripcion", length = 1000)
     private String descripcion;
 
     @OneToMany(mappedBy = "producto", cascade = CascadeType.ALL)

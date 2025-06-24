@@ -1,6 +1,9 @@
 package com.example.EcommerceBackJem.entities;
 
 import com.example.EcommerceBackJem.entities.enums.Role;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -19,8 +22,8 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 public class Usuario extends Base implements UserDetails {
-    @Column(name = "userName")
-    private String userName;
+    @Column(name = "nombre_completo")
+    private String nombreCompleto;
     @Column(name = "email",unique = true)
     private String email;
     @Column(name = "contraseña")
@@ -41,9 +44,11 @@ public class Usuario extends Base implements UserDetails {
     private List<Direccion> direcciones = new ArrayList<>();
 
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnoreProperties("usuario")
     private List<OrdenCompra> ordenesCompra = new ArrayList<>();
 
     @Override
+    @JsonIgnore
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(this.getRol().name()));
     }

@@ -70,18 +70,39 @@ public class ProductoService extends BaseService<Producto, Long> {
         return productoGuardado;
     }
 
-    public Producto asignarDescuento(Long idProducto, Long idDescuento){
-            Producto producto = productoRepository.findById(idProducto)
-                    .orElseThrow(() -> new RuntimeException("Producto no valido"));
+    public Producto asignarDescuento(Long idProducto, Long idDescuento) {
+        Producto producto = productoRepository.findById(idProducto)
+                .orElseThrow(() -> new RuntimeException("Producto no válido"));
 
-            Descuento descuento = descuentoRepository.findById(idDescuento)
-                    .orElseThrow(() -> new RuntimeException("Descuento no valido"));
-            if ((producto.getPrecio() - (producto.getPrecio() * (descuento.getDescuento() / 100)) >= 0)){
-                producto.setDescuento(descuento);
-                return productoRepository.save(producto);
-            }
+        Descuento descuento = descuentoRepository.findById(idDescuento)
+                .orElseThrow(() -> new RuntimeException("Descuento no válido"));
 
-            return producto;
+        double porcentaje = descuento.getDescuento() / 100.0;
+        if (producto.getPrecio() * (1 - porcentaje) >= 0) {
+            Double precioConDescuento = producto.getPrecio() * (1 - porcentaje);
+            producto.setDescuento(descuento);
+            producto.setPrecio(precioConDescuento);
+            return productoRepository.save(producto);
+        }
+
+        return producto;
+    }
+
+    public Producto eliminarDescuento(Long idProducto) {
+        Producto producto = productoRepository.findById(idProducto)
+                .orElseThrow(() -> new RuntimeException("Producto no encontrado"));
+
+        Descuento descuento = producto.getDescuento();
+        double porcentaje = descuento.getDescuento() / 100.0;
+
+        Double precioSinDescuento = producto.getPrecio() / (1 - porcentaje);
+
+        descuento.setActivo(false);
+        descuentoRepository.save(descuento);
+
+        producto.setPrecio(precioSinDescuento);
+        producto.setDescuento(null);
+        return productoRepository.save(producto);
     }
 
 
@@ -102,6 +123,8 @@ public class ProductoService extends BaseService<Producto, Long> {
 
     public List<Producto> getNuevos(){
         Pageable pageable = PageRequest.of(0, 4, Sort.by("id").descending());
-        return productoRepository.findAll(pageable).getContent();
+        return productoRepository.findByActivoTrue(pageable);
     }
+
+
 }

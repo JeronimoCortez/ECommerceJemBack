@@ -63,22 +63,19 @@ public OrdenCompra generarOrdenCompra(List<Long> idDetalle, Long idUsuario) thro
     List<Detalle> detalles = new ArrayList<>();
     Double precioTotal = 0.0;
 
-    // Buscar el usuario
     Usuario usuario = usuarioRepository.findById(idUsuario)
             .orElseThrow(() -> new Exception("Usuario no encontrado"));
 
-    // Buscar los detalles por ID
     for (Long id : idDetalle) {
         Detalle detalle = detalleRepository.findById(id)
                 .orElseThrow(() -> new Exception("No se encontró el detalle con ID " + id));
         detalles.add(detalle);
     }
 
-    // Validar stock y calcular precio total
+
     for (Detalle d : detalles) {
         Producto producto = d.getProducto();
 
-        // Buscar el talle correspondiente
         Optional<Talle> talleProducto = producto.getTalles()
                 .stream()
                 .filter(t -> t.getTalle().equalsIgnoreCase(d.getTalle()))
@@ -90,20 +87,17 @@ public OrdenCompra generarOrdenCompra(List<Long> idDetalle, Long idUsuario) thro
 
         Talle talle = talleProducto.get();
 
-        // Validar stock
         if (talle.getStock() < d.getCantidad()) {
             throw new Exception("Stock insuficiente para el producto " + producto.getNombre() +
                     " talle " + d.getTalle() + ". Disponible: " + talle.getStock());
         }
 
-        // Descontar stock
+
         talle.setStock((int) (talle.getStock() - d.getCantidad()));
 
-        // Calcular precio total (precio unitario * cantidad)
         precioTotal += producto.getPrecio() * d.getCantidad();
     }
 
-    // Crear la orden
     OrdenCompra ordenCompra = OrdenCompra.builder()
             .usuario(usuario)
             .detalles(detalles)
@@ -112,13 +106,23 @@ public OrdenCompra generarOrdenCompra(List<Long> idDetalle, Long idUsuario) thro
             .estado(Estado.PENDIENTE)
             .build();
 
-    // Establecer la relación inversa
     for (Detalle d : detalles) {
         d.setOrdenCompra(ordenCompra);
     }
-
-    // Guardar la orden (y los detalles si tenés cascade)
+    
     return ordenCompraRepository.save(ordenCompra);
 }
+
+public OrdenCompra modificarEstado(Long id, Estado estado) {
+    OrdenCompra ordenCompra = ordenCompraRepository.findById(id).orElseThrow(() -> new RuntimeException("Orden de compra no encotrada"));
+    ordenCompra.setEstado(estado);
+    ordenCompraRepository.save(ordenCompra);
+    return ordenCompra;
+}
+
+    public List<OrdenCompra> ordenesPorUsuario(Long idUsuario) {
+        List<OrdenCompra> ordenes = ordenCompraRepository.findAllByUsuarioId(idUsuario);
+        return ordenes;
+    }
 
 }

@@ -23,6 +23,5 @@ public class Categoria extends Base{
     private Tipo tipo;
 
     @OneToMany(mappedBy = "categoria")
-    @JsonManagedReference
     private List<Producto> productos = new ArrayList<>();
 }

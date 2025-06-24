@@ -5,9 +5,10 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 @Repository
 public interface DescuentoRepository extends BaseRepository<Descuento, Long>{
-    List<Descuento> findByFechaLimiteBeforeAndActivoTrue(LocalDateTime fecha);
+    List<Descuento> findByFechaLimiteBeforeAndActivoTrue(Date fecha);
 }

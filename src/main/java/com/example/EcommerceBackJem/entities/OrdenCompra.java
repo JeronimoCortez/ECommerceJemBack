@@ -1,6 +1,8 @@
 package com.example.EcommerceBackJem.entities;
 
 import com.example.EcommerceBackJem.entities.enums.Estado;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -17,11 +19,13 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 public class OrdenCompra extends Base{
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne()
     @JoinColumn(name = "id_user", referencedColumnName = "id")
+    @JsonIgnoreProperties("ordenesCompra")
     private Usuario usuario;
 
     @OneToMany(mappedBy = "ordenCompra", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnoreProperties("ordenCompra")
     private List<Detalle> detalles = new ArrayList<>();
 
 

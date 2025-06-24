@@ -35,6 +35,12 @@ public class ProductoController extends BaseController<Producto, Long> {
         return ResponseEntity.ok(producto);
     }
 
+    @DeleteMapping("/eliminarDescuento/{idProducto}")
+    public ResponseEntity<Producto> eliminarDescuento(@PathVariable Long idProducto) {
+        Producto producto = productoService.eliminarDescuento(idProducto);
+        return ResponseEntity.ok(producto);
+    }
+
     @GetMapping("/filtrarPorMarca/{marca}")
     public ResponseEntity<List<Producto>> filtroMarca(@PathVariable String marca){
         List<Producto> productos = productoService.filtrarPorMarca(marca);
