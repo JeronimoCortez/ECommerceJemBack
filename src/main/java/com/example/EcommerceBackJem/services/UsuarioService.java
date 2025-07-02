@@ -1,9 +1,12 @@
 package com.example.EcommerceBackJem.services;
 
+import com.example.EcommerceBackJem.entities.Direccion;
 import com.example.EcommerceBackJem.entities.Usuario;
+import com.example.EcommerceBackJem.entities.dto.EditUserProfileDTO;
 import com.example.EcommerceBackJem.entities.dto.UpdateUserDTO;
 import com.example.EcommerceBackJem.entities.dto.UsuarioDTO;
 import com.example.EcommerceBackJem.entities.enums.Role;
+import com.example.EcommerceBackJem.repositories.DireccionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -16,6 +19,8 @@ import java.util.ArrayList;
 public class UsuarioService extends BaseService<Usuario, Long>{
     @Autowired
     private UsuarioRepository usuarioRepository;
+    @Autowired
+    private DireccionRepository direccionRepository;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -84,6 +89,27 @@ public class UsuarioService extends BaseService<Usuario, Long>{
 
         return usuario;
 
+    }
+
+    public Usuario editarPerfilUsuario(Long idUsuario, EditUserProfileDTO dto) {
+        Usuario usuario = usuarioRepository.findById(idUsuario)
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+
+        usuario.setDni(dto.getDni());
+        usuario.setNombreCompleto(dto.getNombre());
+        usuario.setPhone(dto.getPhone());
+        usuarioRepository.save(usuario);
+        return usuario;
+    }
+
+    public Usuario añadirDireccion(Long idUsuario, Direccion direccion){
+        Usuario usuario = usuarioRepository.findById(idUsuario)
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+        Direccion direccionCreada = direccionRepository.save(direccion);
+
+        usuario.getDirecciones().add(direccion);
+        usuarioRepository.save(usuario);
+        return usuario;
     }
 
 }

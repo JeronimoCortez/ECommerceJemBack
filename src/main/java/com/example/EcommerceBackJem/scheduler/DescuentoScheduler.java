@@ -32,22 +32,24 @@ public class DescuentoScheduler {
         LocalDateTime fecha = LocalDateTime.now();
         Date fechaActual = java.sql.Timestamp.valueOf(fecha);
         List<Descuento> descuentosVencidos = descuentoRepository.findByFechaLimiteBeforeAndActivoTrue((fechaActual));
+        List<Producto> productos = productoRepository.findAll();
         System.out.println("Descuentos vencidos: " + descuentosVencidos);
 
         for (Descuento descuento : descuentosVencidos) {
             System.out.println("Porcentaje descuento" + descuento.getDescuento());
             descuento.setActivo(false);
-            if (descuento.getProducto() != null) {
-                Producto producto = productoRepository.findById(descuento.getProducto().getId()).orElseThrow(() -> new RuntimeException("Producto no encontrado"));
+            for (Producto producto: productos) {
+                if (producto.getDescuento() != null && producto.getDescuento().getId() == descuento.getId()) {
 
-                double porcentaje = descuento.getDescuento() / 100.0;
+                    double porcentaje = descuento.getDescuento() / 100.0;
 
-                Double precioSinDescuento = producto.getPrecio() / (1 - porcentaje);
-                producto.setDescuento(null);
-                producto.setPrecio(precioSinDescuento);
-                productoRepository.save(producto);
-
+                    Double precioSinDescuento = producto.getPrecio() / (1 - porcentaje);
+                    producto.setDescuento(null);
+                    producto.setPrecio(precioSinDescuento);
+                    productoRepository.save(producto);
+                }
             }
+
 
         }
 

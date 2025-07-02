@@ -1,6 +1,8 @@
 package com.example.EcommerceBackJem.controllers;
 
+import com.example.EcommerceBackJem.entities.Direccion;
 import com.example.EcommerceBackJem.entities.Usuario;
+import com.example.EcommerceBackJem.entities.dto.EditUserProfileDTO;
 import com.example.EcommerceBackJem.entities.dto.PasswordChangeDto;
 import com.example.EcommerceBackJem.entities.dto.UpdateUserDTO;
 import com.example.EcommerceBackJem.entities.dto.UsuarioDTO;
@@ -40,6 +42,18 @@ public class UsuarioController extends BaseController<Usuario, Long>{
     @PatchMapping("/update/{idUser}/password")
     public ResponseEntity<Usuario> cambiarContraseña(@PathVariable Long idUser, @RequestBody PasswordChangeDto dto) throws Exception {
         Usuario usuario = usuarioService.cambiarContrasenia(dto.getContrasenia(), dto.getNuevaContrasenia(), idUser);
+        return ResponseEntity.ok(usuario);
+    }
+
+    @PatchMapping("/editProfile/{idUser}")
+    public ResponseEntity<Usuario> editarPerfil(@PathVariable Long idUser, @RequestBody EditUserProfileDTO dto) throws Exception{
+        Usuario usuario = usuarioService.editarPerfilUsuario(idUser, dto);
+        return ResponseEntity.ok(usuario);
+    }
+
+    @PatchMapping("/addAddress/{idUser}")
+    public ResponseEntity<Usuario> añadirDireccion(@PathVariable Long idUser, @RequestBody Direccion direccion){
+        Usuario usuario = usuarioService.añadirDireccion(idUser, direccion);
         return ResponseEntity.ok(usuario);
     }
 }
